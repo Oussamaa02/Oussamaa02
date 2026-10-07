@@ -1,0 +1,33 @@
+name: Refresh profile stats
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # daily, 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-profile-stats
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Plain clone of this public repo: no third-party actions, no stored credentials.
+      - name: Clone
+        run: git clone --depth 1 --branch "$GITHUB_REF_NAME" "https://github.com/$GITHUB_REPOSITORY.git" .
+
+      - name: Fetch contributions
+        run: python3 fetch_stats.py
+
+      - name: Render SVGs
+        run: python3 render_svg.py
+
+      - name: Commit (signed by GitHub)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/commit_signed.py

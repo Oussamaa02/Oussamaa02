@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-10-21",
-  "period_start": "2025-10-22",
-  "period_end": "2026-10-21",
+  "as_of": "2026-10-22",
+  "period_start": "2025-10-23",
+  "period_end": "2026-10-22",
   "calendar_days": 365,
-  "total_contributions": 1272,
-  "active_days": 243,
-  "active_day_percent": 66.6,
+  "total_contributions": 1270,
+  "active_days": 242,
+  "active_day_percent": 66.3,
   "best_day_count": 35,
   "best_day_dates": [
     "2026-05-08"
@@ -19,7 +19,7 @@
   "longest_streak_end": "2026-04-19",
   "streak_rule": "Current streak ends today when today has contributions, otherwise yesterday (today may be incomplete). Both streaks are clipped to the displayed 365-day window.",
   "monthly_contributions": {
-    "2025-10": 9,
+    "2025-10": 7,
     "2025-11": 50,
     "2025-12": 84,
     "2026-01": 145,
@@ -34,7 +34,6 @@
     "2026-10": 66
   },
   "daily_contributions": {
-    "2025-10-22": 2,
     "2025-10-23": 3,
     "2025-10-24": 0,
     "2025-10-25": 0,
@@ -398,7 +397,8 @@
     "2026-10-18": 0,
     "2026-10-19": 0,
     "2026-10-20": 1,
-    "2026-10-21": 1
+    "2026-10-21": 1,
+    "2026-10-22": 0
   },
   "sources": [
     "https://github.com/users/Oussamaa02/contributions?from=2025-01-01&to=2025-12-31",

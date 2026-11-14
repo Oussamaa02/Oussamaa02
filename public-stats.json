@@ -410,15 +410,15 @@
   },
   "languages": {
     "scope": "all",
-    "private_repos": 10,
+    "private_repos": 7,
     "weighting": "commits",
     "since": "2025-11-09",
-    "repos": 19,
-    "commits": 659,
+    "repos": 16,
+    "commits": 649,
     "shares": [
       [
         "TypeScript",
-        87.3
+        88.2
       ],
       [
         "CSS",
@@ -433,16 +433,16 @@
         1.8
       ],
       [
-        "Java",
-        1.4
-      ],
-      [
         "Jupyter Notebook",
         1.3
       ],
       [
+        "Java",
+        0.6
+      ],
+      [
         "Other",
-        1.7
+        1.5
       ]
     ]
   },

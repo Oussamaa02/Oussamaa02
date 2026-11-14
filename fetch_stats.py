@@ -106,11 +106,11 @@ def languages(since: date, token: str | None, private: bool) -> dict | None:
             commits, link = _api(f"{API}/repos/{name}/commits?author={USER}&since={since}T00:00:00Z&per_page=1", token)
         except urllib.error.HTTPError as e:
             if e.code == 409:  # empty repository
-                return 0, {}
+                return 0, {}, False
             raise
         m = re.search(r'[?&]page=(\d+)>; rel="last"', link)
         n = int(m[1]) if m else len(commits)
-        return n, (_api(f"{API}/repos/{name}/languages", token)[0] if n else {})
+        return n, (_api(f"{API}/repos/{name}/languages", token)[0] if n else {}), bool(r.get("private"))
 
     try:
         with ThreadPoolExecutor(8) as ex:
@@ -120,12 +120,13 @@ def languages(since: date, token: str | None, private: bool) -> dict | None:
         return None
 
     weight: dict[str, float] = {}
-    used = commits_total = 0
-    for n, langs in results:
+    used = commits_total = private_used = 0
+    for n, langs, is_private in results:
         size = sum(langs.values())
         if not (n and size):
             continue
         used += 1
+        private_used += is_private
         commits_total += n
         for lang, b in langs.items():
             weight[lang] = weight.get(lang, 0) + n * b / size
@@ -137,7 +138,8 @@ def languages(since: date, token: str | None, private: bool) -> dict | None:
     rest = round(sum(v for _, v in ranked[6:]) / total * 100, 1)
     if rest:
         shares.append(["Other", rest])
-    return {"scope": "all" if private else "public", "weighting": "commits", "since": str(since),
+    # Label from what was actually counted, not from whether a token was given.
+    return {"scope": "all" if private_used else "public", "private_repos": private_used, "weighting": "commits", "since": str(since),
             "repos": used, "commits": commits_total, "shares": shares}
 
 
@@ -188,6 +190,10 @@ def main() -> None:
     prev_langs = prev.get("languages") if isinstance(prev.get("languages"), dict) else None
     if lang_token:
         langs = languages(start, lang_token, private=True) or prev_langs
+        if prev_langs and prev_langs.get("scope") == "all" and langs.get("scope") != "all":
+            print("LANG_TOKEN sees no private repos with your commits (wrong resource owner?); "
+                  "keeping the previous private-inclusive languages")
+            langs = prev_langs
     elif prev_langs and prev_langs.get("scope") == "all":
         langs = prev_langs
     else:

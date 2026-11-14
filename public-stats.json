@@ -410,6 +410,7 @@
   },
   "languages": {
     "scope": "all",
+    "private_repos": 10,
     "weighting": "commits",
     "since": "2025-11-09",
     "repos": 19,

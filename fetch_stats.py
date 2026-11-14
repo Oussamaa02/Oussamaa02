@@ -9,7 +9,8 @@ Refuses to overwrite the snapshot if the page shape changes, the cell sum
 disagrees with GitHub's headline, or the data looks wrong, so a GitHub markup
 change fails the workflow instead of publishing bad numbers.
 """
-import html, json, os, re, time, urllib.request
+import html, json, os, re, time, urllib.error, urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -61,29 +62,85 @@ def parse(page: str) -> tuple[dict[str, int], int]:
     return dict(sorted(daily.items())), int(head[1].replace(",", ""))
 
 
-def languages(token: str | None) -> list[list] | None:
-    """Share of code (bytes) across the user's own public, non-fork repos."""
+def _api(url: str, token: str | None) -> tuple[object, str]:
+    headers = {"User-Agent": f"{USER}-profile-stats", "Accept": "application/vnd.github+json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as r:
+        return json.loads(r.read().decode("utf-8")), r.headers.get("Link", "")
+
+
+def _pages(url: str, token: str | None) -> list:
+    out, page = [], 1
+    while True:
+        batch, _ = _api(f"{url}{'&' if '?' in url else '?'}per_page=100&page={page}", token)
+        if not batch:
+            return out
+        out += batch
+        page += 1
+
+
+def languages(since: date, token: str | None, private: bool) -> dict | None:
+    """Language mix weighted by YOUR commits since `since`.
+
+    Each repo's language bytes are split proportionally and multiplied by the
+    number of commits you authored there (default branch), so a big repo you
+    barely touched counts for little. With LANG_TOKEN (read-only, can see
+    private/org repos) private work is included. Only aggregate percentages
+    are written: no repository names ever leave this function.
+    Returns None on any API error so a partial scan never gets published.
+    """
     try:
-        repos = json.loads(get(f"{API}/users/{USER}/repos?per_page=100", "application/vnd.github+json", token))
-        total: dict[str, int] = {}
-        for r in repos:
-            if r.get("fork"):
-                continue
-            for lang, n in json.loads(get(f"{API}/repos/{USER}/{r['name']}/languages",
-                                          "application/vnd.github+json", token)).items():
-                total[lang] = total.get(lang, 0) + n
-    except SystemExit as e:
-        print(f"languages skipped: {e}")
+        repos = {r["full_name"]: r for r in _pages(f"{API}/users/{USER}/repos?type=owner", token)}
+        if private:
+            repos.update({r["full_name"]: r for r in _pages(
+                f"{API}/user/repos?affiliation=owner,collaborator,organization_member", token)})
+    except Exception as e:  # noqa: BLE001
+        print(f"languages skipped: repo list failed: {e}")
         return None
-    s = sum(total.values())
-    if not s:
+    repos = [r for r in repos.values() if not r.get("fork") and r.get("size")]
+
+    def scan(r):
+        name = r["full_name"]
+        try:
+            commits, link = _api(f"{API}/repos/{name}/commits?author={USER}&since={since}T00:00:00Z&per_page=1", token)
+        except urllib.error.HTTPError as e:
+            if e.code == 409:  # empty repository
+                return 0, {}, False
+            raise
+        m = re.search(r'[?&]page=(\d+)>; rel="last"', link)
+        n = int(m[1]) if m else len(commits)
+        return n, (_api(f"{API}/repos/{name}/languages", token)[0] if n else {}), bool(r.get("private"))
+
+    try:
+        with ThreadPoolExecutor(8) as ex:
+            results = list(ex.map(scan, repos))
+    except Exception as e:  # noqa: BLE001
+        print(f"languages skipped: scan failed: {e}")
         return None
-    ranked = sorted(total.items(), key=lambda kv: -kv[1])
-    top, rest = ranked[:6], sum(n for _, n in ranked[6:])
-    out = [[k, round(n / s * 100, 1)] for k, n in top]
+
+    weight: dict[str, float] = {}
+    used = commits_total = private_used = 0
+    for n, langs, is_private in results:
+        size = sum(langs.values())
+        if not (n and size):
+            continue
+        used += 1
+        private_used += is_private
+        commits_total += n
+        for lang, b in langs.items():
+            weight[lang] = weight.get(lang, 0) + n * b / size
+    total = sum(weight.values())
+    if not total:
+        return None
+    ranked = sorted(weight.items(), key=lambda kv: -kv[1])
+    shares = [[k, round(v / total * 100, 1)] for k, v in ranked[:6]]
+    rest = round(sum(v for _, v in ranked[6:]) / total * 100, 1)
     if rest:
-        out.append(["Other", round(rest / s * 100, 1)])
-    return out
+        shares.append(["Other", rest])
+    # Label from what was actually counted, not from whether a token was given.
+    return {"scope": "all" if private_used else "public", "private_repos": private_used, "weighting": "commits", "since": str(since),
+            "repos": used, "commits": commits_total, "shares": shares}
 
 
 def main() -> None:
@@ -127,7 +184,20 @@ def main() -> None:
     for d in days:
         months[str(d)[:7]] = months.get(str(d)[:7], 0) + daily[str(d)]
 
-    langs = languages(os.environ.get("GH_TOKEN")) or prev.get("languages")
+    # LANG_TOKEN (read-only, sees private repos) gives the real mix. Without it only
+    # public repos are visible, so never replace a private-inclusive snapshot with that.
+    lang_token = os.environ.get("LANG_TOKEN")
+    prev_langs = prev.get("languages") if isinstance(prev.get("languages"), dict) else None
+    if lang_token:
+        langs = languages(start, lang_token, private=True) or prev_langs
+        if prev_langs and prev_langs.get("scope") == "all" and langs.get("scope") != "all":
+            print("LANG_TOKEN sees no private repos with your commits (wrong resource owner?); "
+                  "keeping the previous private-inclusive languages")
+            langs = prev_langs
+    elif prev_langs and prev_langs.get("scope") == "all":
+        langs = prev_langs
+    else:
+        langs = languages(start, os.environ.get("GH_TOKEN"), private=False) or prev_langs
 
     stats = {
         "as_of": str(end),

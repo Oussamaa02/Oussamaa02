@@ -1,25 +1,27 @@
 {
-  "as_of": "2026-11-13",
-  "period_start": "2025-11-14",
-  "period_end": "2026-11-13",
-  "calendar_days": 365,
-  "total_contributions": 1693,
-  "active_days": 254,
-  "active_day_percent": 69.6,
+  "as_of": "2026-11-14",
+  "period_start": "2025-11-09",
+  "period_end": "2026-11-14",
+  "calendar_days": 371,
+  "total_contributions": 1711,
+  "contributed_today": true,
+  "active_days": 259,
+  "active_day_percent": 69.8,
   "best_day_count": 62,
   "best_day_dates": [
     "2026-10-30"
   ],
-  "avg_per_active_day": 6.7,
-  "current_streak": 2,
-  "current_streak_end": "2026-11-13",
+  "avg_per_active_day": 6.6,
+  "current_streak": 3,
+  "current_streak_end": "2026-11-14",
   "current_streak_start": "2026-11-12",
   "longest_streak": 24,
   "longest_streak_start": "2026-03-27",
   "longest_streak_end": "2026-04-19",
-  "streak_rule": "Current streak ends today when today has contributions, otherwise yesterday (today may be incomplete). Both streaks are clipped to the displayed 365-day window.",
+  "streak_rule": "Current streak ends today when today has contributions, otherwise yesterday (today may be incomplete). Both streaks are clipped to the displayed calendar window.",
+  "window_rule": "Same window as GitHub's profile calendar: the Sunday before one year ago through today (UTC).",
   "monthly_contributions": {
-    "2025-11": 37,
+    "2025-11": 47,
     "2025-12": 84,
     "2026-01": 145,
     "2026-02": 99,
@@ -31,9 +33,14 @@
     "2026-08": 61,
     "2026-09": 212,
     "2026-10": 282,
-    "2026-11": 227
+    "2026-11": 235
   },
   "daily_contributions": {
+    "2025-11-09": 3,
+    "2025-11-10": 0,
+    "2025-11-11": 2,
+    "2025-11-12": 2,
+    "2025-11-13": 3,
     "2025-11-14": 2,
     "2025-11-15": 0,
     "2025-11-16": 0,
@@ -398,10 +405,41 @@
     "2026-11-10": 0,
     "2026-11-11": 0,
     "2026-11-12": 21,
-    "2026-11-13": 5
+    "2026-11-13": 9,
+    "2026-11-14": 4
   },
+  "languages": [
+    [
+      "Jupyter Notebook",
+      37.9
+    ],
+    [
+      "Java",
+      26.2
+    ],
+    [
+      "Python",
+      15.3
+    ],
+    [
+      "TypeScript",
+      8.3
+    ],
+    [
+      "TeX",
+      6.0
+    ],
+    [
+      "JavaScript",
+      4.6
+    ],
+    [
+      "Other",
+      1.7
+    ]
+  ],
   "sources": [
-    "https://github.com/users/Oussamaa02/contributions?from=2025-01-01&to=2025-12-31",
-    "https://github.com/users/Oussamaa02/contributions?from=2026-01-01&to=2026-12-31"
+    "https://github.com/users/Oussamaa02/contributions",
+    "https://api.github.com/users/Oussamaa02/repos"
   ]
 }

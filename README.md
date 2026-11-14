@@ -1,3 +1,4 @@
-<img src="./assets/heatmap.svg" width="100%" alt="Contribution heatmap for the last 365 days. Refreshed daily." />
-
-<img src="./assets/analytics.svg" width="100%" alt="GitHub analytics: current and longest streak, active days, best day, average per active day, and monthly contribution bars. Refreshed daily." />
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="./assets/profile-light.svg" />
+  <img src="./assets/profile-dark.svg" width="100%" alt="Contribution card: contributions in the last year, 30-day trend, heatmap with weekday rhythm, monthly bars, streaks, active days, best day and languages. Refreshed every 6 hours." />
+</picture>

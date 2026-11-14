@@ -6,7 +6,7 @@ createCommitOnBranch commits are signed by GitHub, so they show as
 """
 import base64, json, os, subprocess, sys, urllib.request
 
-FILES = ["public-stats.json", "assets/heatmap.svg", "assets/analytics.svg"]
+FILES = ["public-stats.json", "assets/profile-dark.svg", "assets/profile-light.svg"]
 
 
 def git(*args: str) -> str:

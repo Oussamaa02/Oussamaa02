@@ -24,6 +24,9 @@ jobs:
       - name: Fetch contributions and languages
         env:
           GH_TOKEN: ${{ github.token }}
+          # Optional read-only token that can see your private/org repos, so the
+          # language mix reflects all your commits. Only percentages are published.
+          LANG_TOKEN: ${{ secrets.LANG_TOKEN }}
         run: python3 fetch_stats.py
 
       - name: Render SVGs

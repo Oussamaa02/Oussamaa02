@@ -90,8 +90,11 @@ def card(theme: str) -> str:
     by = oy + 7 * p + 46
     sy = by + 34
     stats_end = sy + 66
-    langs = S.get("languages") or []
-    H = round(stats_end + (52 if langs else 0))
+    lang_info = S.get("languages") or {}
+    if isinstance(lang_info, list):  # older snapshot format
+        lang_info = {"shares": lang_info, "scope": "public"}
+    langs = lang_info.get("shares") or []
+    H = round(stats_end + (66 if langs else 0))
 
     nz = sorted(v for v in daily.values() if v) or [1]
     q = [nz[int(len(nz) * f)] for f in (0.25, 0.5, 0.75)]
@@ -196,8 +199,11 @@ def card(theme: str) -> str:
 
     # language strip
     if langs:
-        ly = stats_end + 2
-        o.append(f'<line x1="{PX}" x2="{W-PX}" y1="{ly - 2:.1f}" y2="{ly - 2:.1f}" stroke="var(--line)"/>')
+        o.append(f'<line x1="{PX}" x2="{W-PX}" y1="{stats_end:.1f}" y2="{stats_end:.1f}" stroke="var(--line)"/>')
+        scope = "incl. private repos" if lang_info.get("scope") == "all" else "public repos"
+        o.append(text(PX, stats_end + 22, "languages", fs=10, delay=1.5))
+        o.append(text(W - PX, stats_end + 22, f"weighted by my commits · last year · {scope}", fs=10, anchor="end", delay=1.5))
+        ly = stats_end + 16
         x, lx, tw = PX, PX, W - 2 * PX
         for i, (name, pct) in enumerate(langs):
             c = LANG_COLORS.get(name, "#8b949e")

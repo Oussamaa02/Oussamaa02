@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-11-14",
-  "period_start": "2025-11-09",
-  "period_end": "2026-11-14",
-  "calendar_days": 371,
-  "total_contributions": 1751,
+  "as_of": "2026-11-16",
+  "period_start": "2025-11-16",
+  "period_end": "2026-11-16",
+  "calendar_days": 366,
+  "total_contributions": 1752,
   "contributed_today": true,
-  "active_days": 259,
-  "active_day_percent": 69.8,
+  "active_days": 256,
+  "active_day_percent": 69.9,
   "best_day_count": 62,
   "best_day_dates": [
     "2026-10-30"
   ],
   "avg_per_active_day": 6.8,
-  "current_streak": 3,
-  "current_streak_end": "2026-11-14",
+  "current_streak": 5,
+  "current_streak_end": "2026-11-16",
   "current_streak_start": "2026-11-12",
   "longest_streak": 24,
   "longest_streak_start": "2026-03-27",
@@ -21,7 +21,7 @@
   "streak_rule": "Current streak ends today when today has contributions, otherwise yesterday (today may be incomplete). Both streaks are clipped to the displayed calendar window.",
   "window_rule": "Same window as GitHub's profile calendar: the Sunday before one year ago through today (UTC).",
   "monthly_contributions": {
-    "2025-11": 47,
+    "2025-11": 35,
     "2025-12": 84,
     "2026-01": 145,
     "2026-02": 99,
@@ -33,16 +33,9 @@
     "2026-08": 61,
     "2026-09": 212,
     "2026-10": 282,
-    "2026-11": 275
+    "2026-11": 288
   },
   "daily_contributions": {
-    "2025-11-09": 3,
-    "2025-11-10": 0,
-    "2025-11-11": 2,
-    "2025-11-12": 2,
-    "2025-11-13": 3,
-    "2025-11-14": 2,
-    "2025-11-15": 0,
     "2025-11-16": 0,
     "2025-11-17": 3,
     "2025-11-18": 7,
@@ -406,23 +399,25 @@
     "2026-11-11": 0,
     "2026-11-12": 21,
     "2026-11-13": 12,
-    "2026-11-14": 41
+    "2026-11-14": 41,
+    "2026-11-15": 11,
+    "2026-11-16": 2
   },
   "languages": {
     "scope": "all",
     "private_repos": 7,
     "weighting": "commits",
-    "since": "2025-11-09",
-    "repos": 16,
-    "commits": 677,
+    "since": "2025-11-16",
+    "repos": 15,
+    "commits": 683,
     "shares": [
       [
         "TypeScript",
-        87.8
+        87.9
       ],
       [
         "CSS",
-        4.5
+        4.6
       ],
       [
         "Python",
@@ -437,12 +432,12 @@
         1.2
       ],
       [
-        "Java",
+        "HTML",
         0.6
       ],
       [
         "Other",
-        1.4
+        1.3
       ]
     ]
   },

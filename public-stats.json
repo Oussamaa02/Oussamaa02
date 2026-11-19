@@ -1,12 +1,12 @@
 {
-  "as_of": "2026-11-18",
+  "as_of": "2026-11-19",
   "period_start": "2025-11-16",
-  "period_end": "2026-11-18",
-  "calendar_days": 368,
+  "period_end": "2026-11-19",
+  "calendar_days": 369,
   "total_contributions": 1798,
-  "contributed_today": true,
+  "contributed_today": false,
   "active_days": 258,
-  "active_day_percent": 70.1,
+  "active_day_percent": 69.9,
   "best_day_count": 62,
   "best_day_dates": [
     "2026-10-30"
@@ -403,7 +403,8 @@
     "2026-11-15": 11,
     "2026-11-16": 15,
     "2026-11-17": 26,
-    "2026-11-18": 7
+    "2026-11-18": 7,
+    "2026-11-19": 0
   },
   "languages": {
     "scope": "all",

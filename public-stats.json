@@ -3,7 +3,7 @@
   "period_start": "2025-11-16",
   "period_end": "2026-11-21",
   "calendar_days": 371,
-  "total_contributions": 1815,
+  "total_contributions": 1817,
   "contributed_today": true,
   "active_days": 261,
   "active_day_percent": 70.4,
@@ -33,7 +33,7 @@
     "2026-08": 61,
     "2026-09": 212,
     "2026-10": 282,
-    "2026-11": 351
+    "2026-11": 353
   },
   "daily_contributions": {
     "2025-11-16": 0,
@@ -406,7 +406,7 @@
     "2026-11-18": 7,
     "2026-11-19": 3,
     "2026-11-20": 8,
-    "2026-11-21": 6
+    "2026-11-21": 8
   },
   "languages": {
     "scope": "all",

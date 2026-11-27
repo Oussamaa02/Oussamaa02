@@ -1,20 +1,20 @@
 {
-  "as_of": "2026-11-26",
+  "as_of": "2026-11-27",
   "period_start": "2025-11-23",
-  "period_end": "2026-11-26",
-  "calendar_days": 369,
-  "total_contributions": 1821,
-  "contributed_today": false,
-  "active_days": 259,
-  "active_day_percent": 70.2,
+  "period_end": "2026-11-27",
+  "calendar_days": 370,
+  "total_contributions": 1827,
+  "contributed_today": true,
+  "active_days": 260,
+  "active_day_percent": 70.3,
   "best_day_count": 62,
   "best_day_dates": [
     "2026-10-30"
   ],
   "avg_per_active_day": 7.0,
-  "current_streak": 0,
-  "current_streak_end": null,
-  "current_streak_start": null,
+  "current_streak": 1,
+  "current_streak_end": "2026-11-27",
+  "current_streak_start": "2026-11-27",
   "longest_streak": 24,
   "longest_streak_start": "2026-03-27",
   "longest_streak_end": "2026-04-19",
@@ -33,7 +33,7 @@
     "2026-08": 61,
     "2026-09": 212,
     "2026-10": 282,
-    "2026-11": 379
+    "2026-11": 385
   },
   "daily_contributions": {
     "2025-11-23": 2,
@@ -404,7 +404,8 @@
     "2026-11-23": 7,
     "2026-11-24": 7,
     "2026-11-25": 0,
-    "2026-11-26": 0
+    "2026-11-26": 0,
+    "2026-11-27": 6
   },
   "languages": {
     "scope": "all",
